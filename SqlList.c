@@ -96,4 +96,65 @@ void SqlListPushFront(SL* ps, SLDataType x)
 	ps->size++;
 
 }
-void SqlListPopFront(SL* ps);
+void SqlListPopFront(SL* ps)
+{
+	assert(ps->size > 0);
+
+	//挪动数据
+	int begin = 0;
+	while (begin < ps->size)
+	{
+		ps->a[begin] = ps->a[begin+1];
+		++begin;
+	}
+	ps->size--;
+}
+
+int SqlListFind(SL* ps, SLDataType x)//查找数据
+{
+	for (int i = 0; i < ps->size; i++)
+	{
+		if (ps->a[i] == x)
+		{
+			return i;
+		}
+	}
+
+	//没有找到返回0
+	return -1;
+}
+void SqlListInsert(SL* ps, int post, SLDataType x) //指定pos位置插入数据
+{
+	if (post > ps->size || post > 0)
+	{
+		printf("插入位置有误");
+	}
+	else
+	{
+		SqlListCheckCapacity(ps);
+		int p = ps->size - 1;
+
+		//挪动数据
+		while (p >= post)  
+		{
+			ps->a[p+1] = ps->a[p];
+			p--;
+		}
+
+		ps->a[post] = x;
+		ps->size++;
+	}
+}
+void SqlListErase(SL* ps, int pos) //删除pos位置处的数据
+{
+	assert(pos >= 0 && pos < ps->size-1);
+
+	//int p = pos;
+	while (pos < ps->size-1)
+	{
+		ps->a[pos] = ps->a[pos + 1];
+		pos++;
+	}
+
+	ps->size--;
+}
